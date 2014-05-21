@@ -1,0 +1,17 @@
+{
+  "name": "Flag Quiz",
+  "version": "0.0.1",
+  "homepage": "https://github.com/anauleau/flagQuiz",
+  "authors": [
+    "Andreas Nauleau (anauleau@gmail.com)"
+  ],
+  "description": "A flag quiz game",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
