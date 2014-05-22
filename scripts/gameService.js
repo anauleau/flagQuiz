@@ -1,20 +1,25 @@
-flagQuiz.service('gameService', ['', function(){
+flagQuiz.service('gameService', ['$q', function($q){
+    // Game Constructor
     function _Game() {
         this.score = 0;
         this.nickname = '';
         this.gameClock = 60;
     }
 
-    function _startTime(gameClock) {
-        setInterval(function() {
-            gameClock = gameClock - 1;
-        }, 1000)
+    // Question Constructor
+    function _Question(answer, choices) {
+        this.flagSource = 'assets/country-pngs/' + answer.Code.toLowerCase() + '.png';
+        this.correctAnswer = answer;
+        this.choices = choices;
+        this.answer = undefined;
     }
 
+    // Accepts the remaining countries array as an arg, plucks & returns a random country from the array
     function _pluckCountry(countries) {
         return countries.splice(~~(Math.random() * countries.length));
     }
 
+    // Selects 3 decoy countries from the countries array & returns them in an array
     function _pickDecoys(countries) {
         var cache = {},
             decoys = [],
@@ -29,33 +34,71 @@ flagQuiz.service('gameService', ['', function(){
         return decoys;
     }
 
+    // Shuffels the array of possible answers
+    // Used so ng-repeat can be used to render w/o the answer in the same place everytime
     function _shuffleArray(array) {
-        var m = array.length, t, i;
-
-        // While there remain elements to shuffle
-        while (m) {
-            // Pick a remaining element…
-            i = Math.floor(Math.random() * m--);
-
-            // And swap it with the current element.
-            t = array[m];
-            array[m] = array[i];
-            array[i] = t;
+        var remainingElements = array.length,
+            temp,
+            index;
+        while (remainingElements) {
+            index = Math.floor(Math.random() * remainingElements--);
+            temp = array[remainingElements];e
+            array[remainingElements] = array[i];
+            array[index] = temp;
         }
 
         return array;
     }
 
-    function _startGame (game) {
-        _startTime(gameClock);
-        while(game.gameClock > 0) {
-
-        }
-        clearInterval(refreshIntervalId);
+    function _startGame(game, interval) {
+        _startTime(gameClock, interval);
     }
+
+    // Start interval for game clock
+    function _startTime(gameClock, interval) {
+        interval = setInterval(function() { gameClock = gameClock - 1;}, 1000);
+    }
+
+    // Prevent Memory Leak via neverending interval
+    function _stopTime(interval) {
+        clearInterval(interval);
+    }
+
+    // Upticks score by 5pts
+    function _handleCorrectAnswer(score) {
+        score += 5;
+    }
+
+    // Downticks score by 5pts, unless score is 0
+    function _handleIncorrectAnswer(score) {
+        score = score === 0 ? 0 : score -= 5;
+    }
+
+    // Handle incoming answers, checks correctness returns promise
+    function _handleAnswer (question, answer, quizLog) {
+        var deferred = $q.defer();
+        question.answer = answer;
+        quizLog.push(question);
+        if (question.correctAnswer['Country name'] === answer) {
+            deferred.resolve(true);
+        } else {
+            deferred.resolve(false);
+        }
+        return deferred.promise;
+    }
+
+
 
     return {
         Game: _Game,
-        startGame: _startGame
+        handleCorrectAnswer: _handleCorrectAnswer,
+        handleIncorrectAnswer: _handleIncorrectAnswer,
+        pickDecoys: _pickDecoys,
+        pluckCountry: _pluckCountry,
+        Question: _Question,
+        shuffleArray: _shuffleArray,
+        startGame: _startGame,
+        startTime: _startTime,
+        stopTime: _stopTime
     }
 }]);
