@@ -1,0 +1,57 @@
+<!doctype html>
+<html ng-app="flagQuiz">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>World Flag Quiz</title>
+        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="styles/main.css"/>
+    </head>
+    <body>
+        <div class="site-wrapper" ng-controller="mainCtrl">
+            <div class="site-wrapper-inner">
+                <div class="cover-container">
+                    <div class="masthead clearfix">
+                        <div class="inner">
+                            <h3 class="masthead-brand">World Flag Quiz Game</h3>
+                            <ul class="nav masthead-nav">
+                                <li class="active"><a href="#">Game</a></li>
+                                <li><a href="#">Rules</a></li>
+                                <li><a href="#">Leader Board</a></li>
+                                <li><a href="#">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div ng-view></div>
+                    <div class="inner cover">
+                        <h1 class="cover-heading">World Flag Quiz</h1>
+                        <p class="lead">Click the play button to test your knowledge!</p>
+                        <p class="lead">
+                            <a href="#" class="btn btn-lg btn-default">Play</a>
+                        </p>
+                    </div>
+                    <div class="inner cover" ng-show="butt">
+                        <h1 class="cover-heading">World Flag Quiz</h1>
+                        <p class="lead">Click the play button to test your knowledge!</p>
+                        <p class="lead">
+                            <a href="#" class="btn btn-lg btn-default">Play</a>
+                        </p>
+                    </div>
+                    <div class="mastfoot">
+                        <div class="inner">
+                            <p>Game created by Andreas Nauleau. Source available on <a href="https://github.com/anauleau/flagQuiz">Github</a>.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Le Javascripts-->
+        <script src="bower_components/jquery/dist/jquery.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.9/angular-route.js"></script>
+        <script src="scripts/app.js"></script>
+    </body>
+</html>
