@@ -1,4 +1,4 @@
-flagQuiz.service('gameService', ['$q', function($q){
+flagQuiz.service('gameService', ['$q', '$http', function($q, $http){
     // Game Constructor
     function _Game() {
         this.score = 0;
@@ -34,8 +34,8 @@ flagQuiz.service('gameService', ['$q', function($q){
         return decoys;
     }
 
-    // Shuffels the array of possible answers
-    // Used so ng-repeat can be used to render w/o the answer in the same place everytime
+    // Shuffles the array of possible answers
+    // Used so ng-repeat can be used to render w/o the answer in the same place every time
     function _shuffleArray(array) {
         var remainingElements = array.length,
             temp,
@@ -59,7 +59,7 @@ flagQuiz.service('gameService', ['$q', function($q){
         interval = setInterval(function() { gameClock = gameClock - 1;}, 1000);
     }
 
-    // Prevent Memory Leak via neverending interval
+    // Prevent Memory Leak via never ending interval
     function _stopTime(interval) {
         clearInterval(interval);
     }
@@ -87,10 +87,20 @@ flagQuiz.service('gameService', ['$q', function($q){
         return deferred.promise;
     }
 
+    // Get Countries JSON List
+    function _getCountries() {
+        var deferred = $q.defer();
+        $http.get('data/countries.json').success(function(result){
+            deferred.resolve(result);
+        });
+        return deferred.promise;
+    }
 
 
     return {
         Game: _Game,
+        getCountries: _getCountries,
+        handleAnswer: _handleAnswer,
         handleCorrectAnswer: _handleCorrectAnswer,
         handleIncorrectAnswer: _handleIncorrectAnswer,
         pickDecoys: _pickDecoys,
